@@ -455,7 +455,7 @@ class BaseRtlSdr(object):
         Arguments:
             enabled (bool):
         """
-        if not librtlsdr.rtlsdr_set_dithering:
+        if not librtlsdr.dithering_supported:
             raise NotImplementedError('librtlsdr does not support setting PLL dithering')
 
         result = librtlsdr.rtlsdr_set_dithering(self.dev_p, int(enabled))
@@ -471,7 +471,7 @@ class BaseRtlSdr(object):
         Arguments:
             gpio (int): RTL-SDR GPIO pin number
         """
-        if not librtlsdr.rtlsdr_set_gpio_output:
+        if not librtlsdr.gpio_output_supported:
             raise NotImplementedError('librtlsdr does not support setting GPIO output')
         result = librtlsdr.rtlsdr_set_gpio_output(self.dev_p, int(gpio))
         if result < 0:
@@ -486,6 +486,9 @@ class BaseRtlSdr(object):
         Arguments:
             gpio (int): RTL-SDR GPIO pin number
         """
+        if not librtlsdr.gpio_input_supported:
+            raise NotImplementedError('librtlsdr does not support setting GPIO input')
+
         result = librtlsdr.rtlsdr_set_gpio_input(self.dev_p, int(gpio))
         if result < 0:
             raise IOError('Error code %d when setting GPIO to input mode'\
@@ -500,6 +503,8 @@ class BaseRtlSdr(object):
             gpio (int): RTL-SDR GPIO pin number
             val (int): state to set GPIO pin to, 0 or 1
         """
+        if not librtlsdr.gpio_bit_supported:
+            raise NotImplementedError('librtlsdr does not support setting GPIO bit')
         result = librtlsdr.rtlsdr_set_gpio_bit(self.dev_p, int(gpio), int(val))
         if result < 0:
             raise IOError('Error code %d when setting GPIO bit'\
@@ -517,6 +522,8 @@ class BaseRtlSdr(object):
             val (int): Setting of GPIO pin
         """
         val = c_int32(-1)
+        if not librtlsdr.gpio_bit_supported:
+            raise NotImplementedError('librtlsdr does not support getting GPIO bit')
         result = librtlsdr.rtlsdr_get_gpio_bit(self.dev_p, int(gpio), byref(val))
         if result < 0:
             raise IOError('Error code %d when getting GPIO bit'\
@@ -530,6 +537,8 @@ class BaseRtlSdr(object):
         Arguments:
             val (int): byte
         """
+        if not librtlsdr.gpio_byte_supported:
+            raise NotImplementedError('librtlsdr does not support setting GPIO byte')
         result = librtlsdr.rtlsdr_set_gpio_byte(self.dev_p, int(val))
         if result < 0:
             raise IOError('Error code %d when setting GPIO byte'\
@@ -544,6 +553,8 @@ class BaseRtlSdr(object):
             val (int): byte containing settings of multiple GPIO pins
         """
         val = c_int32(-1)
+        if not librtlsdr.gpio_byte_supported:
+            raise NotImplementedError('librtlsdr does not support getting GPIO byte')
         result = librtlsdr.rtlsdr_get_gpio_byte(self.dev_p, byref(val))
         if result < 0:
             raise IOError('Error code %d when setting GPIO byte'\
@@ -561,6 +572,8 @@ class BaseRtlSdr(object):
             val (int): byte containing status of all GPIO pins
         """
         val = c_int32(-1)
+        if not librtlsdr.gpio_status_supported:
+            raise NotImplementedError('librtlsdr does not support setting GPIO status')
         result = librtlsdr.rtlsdr_set_gpio_status(self.dev_p, byref(val))
         if result < 0:
             raise IOError('Error code %d when setting GPIO byte'\
