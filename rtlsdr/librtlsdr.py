@@ -158,8 +158,11 @@ except AttributeError:
     f = None
 
 # RTLSDR_API int rtlsdr_set_gpio_input(rtlsdr_dev_t *dev, uint8_t gpio)
-f = librtlsdr.rtlsdr_set_gpio_input
-f.restype, f.argtypes = c_int, [p_rtlsdr_dev, c_uint8]
+try:
+    f = librtlsdr.rtlsdr_set_gpio_input
+    f.restype, f.argtypes = c_int, [p_rtlsdr_dev, c_uint8]
+except AttributeError:
+    f = None
 
 # RTLSDR_API int librtlsdr.rtlsdr_set_gpio_bit(rtlsdr_dev_t *dev, uint8_t gpio, int val)
 f = librtlsdr.rtlsdr_set_gpio_bit
