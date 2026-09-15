@@ -179,6 +179,9 @@ class BaseRtlSdr(object):
 
         # disable PLL dithering if necessary. If it's going to happen, it must
         # happen before frequency is set.
+        if not librtlsdr.rtlsdr_set_dithering:
+            raise NotImplementedError('librtlsdr does not support setting PLL dithering')
+
         result = librtlsdr.rtlsdr_set_dithering(self.dev_p, int(dithering_enabled))
         if result < 0:
             raise IOError('Error code %d when setting PLL dithering mode'\
@@ -452,6 +455,9 @@ class BaseRtlSdr(object):
         Arguments:
             enabled (bool):
         """
+        if not librtlsdr.rtlsdr_set_dithering:
+            raise NotImplementedError('librtlsdr does not support setting PLL dithering')
+
         result = librtlsdr.rtlsdr_set_dithering(self.dev_p, int(enabled))
         if result < 0:
             raise IOError('Error code %d when setting PLL dither mode'\

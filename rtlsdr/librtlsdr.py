@@ -144,8 +144,11 @@ f = librtlsdr.rtlsdr_set_direct_sampling
 f.restype, f.argtypes = c_int, [p_rtlsdr_dev, c_int]
 
 # RTLSDR_API int rtlsdr_set_dithering(rtlsdr_dev *dev, int on)
-f = librtlsdr.rtlsdr_set_dithering
-f.restype, f.argtypes = c_int, [p_rtlsdr_dev, c_int]
+try:
+    f = librtlsdr.rtlsdr_set_dithering
+    f.restype, f.argtypes = c_int, [p_rtlsdr_dev, c_int]
+except AttributeError:
+    f = None
 
 # RTLSDR_API int rtlsdr_set_gpio_output(rtlsdr_dev_t *dev, uint8_t gpio)
 f = librtlsdr.rtlsdr_set_gpio_output
