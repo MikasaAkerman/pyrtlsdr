@@ -471,6 +471,8 @@ class BaseRtlSdr(object):
         Arguments:
             gpio (int): RTL-SDR GPIO pin number
         """
+        if not librtlsdr.rtlsdr_set_gpio_output:
+            raise NotImplementedError('librtlsdr does not support setting GPIO output')
         result = librtlsdr.rtlsdr_set_gpio_output(self.dev_p, int(gpio))
         if result < 0:
             raise IOError('Error code %d when setting GPIO to output mode'\
